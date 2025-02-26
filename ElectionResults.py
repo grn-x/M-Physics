@@ -32,16 +32,16 @@ parties = ["CDU", "SPD", "GRÜNE", "FDP", "LINKE", "AFD", "BSW", "OTHERS"]
 colors = ["black", "r", "g", "y", "m", "b", "purple", "k"]
 
 europe19 = [22.6, 15.8, 20.5, 5.4, 5.5, 11.0, 0, 13.7]
-opacity_e19 = 0.5
-lighten_e19 = 0.6
+opacity_e19 = 1#0.5
+lighten_e19 = 0.2#0.6
 
 general21 = [18.9, 25.7, 14.8, 11.5, 4.9, 10.4, 0, 13.8]
-opacity_g21 = 0.99
-lighten_g21 = 0.7
+opacity_g21 = 1#0.99
+lighten_g21 = 0.7#0.7
 
 europe24 = [30.0, 13.9, 11.9, 5.2, 2.7, 15.9, 6.2, 5.5]
-opacity_e24 = 0.5
-lighten_e24 = 0.8
+opacity_e24 = 1#0.5
+lighten_e24 = 0.5#0.8
 
 general25 = [28.5, 16.4, 11.6, 4.3, 8.8, 20.8, 4.8, 3.0]
 opacity_g25 = 1
