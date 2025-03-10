@@ -13,7 +13,13 @@ and saved in the`assets` folder
 
 ### Examples
 
-![Election Results Germany](./assets/ElectionResults.png)
-![Relativistic Energy](./assets/RelativisticEnergy.png)
-![Dom Saves Letty Movie Scene](./assets/DsL-Scene.png)
-![Bionomial Distribution](./assets/BinomialDistribution.png)
+<table>
+  <tr>
+    <td><img src="./assets/ElectionResults.png" alt="Election Results Germany" width="300"></td>
+    <td><img src="./assets/RelativisticEnergy.png" alt="Relativistic Energy" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/DsL-Scene.png" alt="Dom Saves Letty Movie Scene" width="300"></td>
+    <td><img src="./assets/BinomialDistribution.png" alt="Binomial Distribution" width="300"></td>
+  </tr>
+</table>
