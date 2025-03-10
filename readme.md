@@ -15,5 +15,5 @@ and saved in the`assets` folder
 
 ![Election Results Germany](./assets/ElectionResults.png)
 ![Relativistic Energy](./assets/RelativisticEnergy.png)
-![Dom Saves Letty Movie Scene](./assets/DsL-Scene.png)
+![Dom Saves Letty Movie Scene](./assets/DsL-scene.png)
 ![Bionomial Distribution](./assets/BinomialDistribution.png)
