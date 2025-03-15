@@ -31,10 +31,10 @@ eq2 = sp.Eq(sp.diff(P, x).subs(x, x_value), f_prime.subs(x, x_value))
 # P''(x_value) should be equal to f''(x_value)
 eq3 = sp.Eq(sp.diff(P, x, x).subs(x, x_value), f_double_prime.subs(x, x_value))
 
-# Solve for the parameters a0, a1, a2
+# solve for the parameters a0, a1, a2
 solution = sp.solve((eq1, eq2, eq3), (a0, a1, a2))
 
-# Substitute the solutions into the polynomial
+# substitute the solutions into the polynomial
 P_approx = P.subs(solution)
 
 print(f"Original function: {f}")
