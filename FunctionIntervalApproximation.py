@@ -1,6 +1,7 @@
-# ill tell you what though folks, thats bloody nice, that is really ... that is bloody lovely
-# https://youtu.be/tnPG-kOTrls?t=454
 import sympy as sp
+import matplotlib.pyplot as plt
+import numpy as np
+
 # First time working with sympy, i need all the comments to memorize
 # what my pastes from the docs actually do
 
@@ -13,32 +14,47 @@ x_value = 0
 x = sp.symbols('x')
 f = sp.exp(x)
 
-# Derive the function twice
-f_prime = sp.diff(f, x)
-f_double_prime = sp.diff(f_prime, x)
+# Number of approximation iterations/degree of polynomial
+num_iterations = 5
+
+P = 0 # P = polynomial
+
+polynomials = []
+
+for i in range(num_iterations):
+    f_prime = sp.diff(f, x, i)
+    # calculate i-th term of taylor series
+    term = (f_prime.subs(x, x_value) / sp.factorial(i)) * (x - x_value)**i
+    P += term # append term to the polynomial
+    polynomials.append(P)
 
 
-# Define the polynomial to approximate the original function
-# P(x) = a0 + a1*x + a2*x**2
-a0, a1, a2 = sp.symbols('a0 a1 a2')
-P = a0 + a1 * x + a2 * x**2
 
-#calculate polynomial params
-# P(x_value) should be equal to f(x_value)
-eq1 = sp.Eq(P.subs(x, x_value), f.subs(x, x_value))
-# P'(x_value) should be equal to f'(x_value)
-eq2 = sp.Eq(sp.diff(P, x).subs(x, x_value), f_prime.subs(x, x_value))
-# P''(x_value) should be equal to f''(x_value)
-eq3 = sp.Eq(sp.diff(P, x, x).subs(x, x_value), f_double_prime.subs(x, x_value))
+# plots
+x_vals = np.linspace(-2, 2, 400)
+f_vals = [sp.N(f.subs(x, val)) for val in x_vals]
 
-# solve for the parameters a0, a1, a2
-solution = sp.solve((eq1, eq2, eq3), (a0, a1, a2))
+plt.plot(x_vals, f_vals, label='Original function $e^x$', color='black')
 
-# substitute the solutions into the polynomial
-P_approx = P.subs(solution)
+for i, poly in enumerate(polynomials):
+    poly_vals = [sp.N(poly.subs(x, val)) for val in x_vals]
+    if i == num_iterations - 1:
+        plt.plot(x_vals, poly_vals, label=f'Approximation {i+1}', color='blue')
+    else:
+        plt.plot(x_vals, poly_vals, label=f'Approximation {i+1}', color='blue', alpha=0.3)
 
-print(f"Original function: {f}")
-print(f"First derivative: {f_prime}")
-print(f"Second derivative: {f_double_prime}")
-print(f"Approximating polynomial: {P_approx}")
-print(f"Solution for parameters: {solution}")
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title(f'Taylor Series Approximation of {sp.latex(f)} at x = {x_value}')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+"""print(f"Original function: {sp.latex(f)}")
+print(f"Original function: {sp.pretty(f)}")
+print(f"Original function: {sp.sstrrepr(f)}")
+print(f"Original function: {sp.sstr(f)}")
+print(f"Original function: {str(f)}")"""
+
+print(f"Final approximation: {polynomials[-1]}")
