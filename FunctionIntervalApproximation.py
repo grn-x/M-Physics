@@ -11,7 +11,7 @@ import matplotlib.colors as mcolors
 # Threshold for determining viewport (difference between original function and approximation)
 threshold = 0.5
 
-# Scale factor between x and y axis
+# Scale factor between x and y-axis
 scale_factor = 0.03
 
 # x value for approximation
@@ -50,8 +50,11 @@ final_poly = polynomials[-1]
 # evaluate the original function; approximation at a given x value
 # access globally defined original and approximated function
 def eval_at(x_val):
-    orig = float(sp.N(f.subs(x, x_val)))
+    """orig = float(sp.N(f.subs(x, x_val)))
     approx = float(sp.N(final_poly.subs(x, x_val)))
+    return orig, approx, abs(orig - approx)"""
+    orig = float(sp.re(f.subs(x, x_val).evalf(chop=True)))
+    approx = float(sp.re(final_poly.subs(x, x_val).evalf(chop=True)))
     return orig, approx, abs(orig - approx)
 
 
