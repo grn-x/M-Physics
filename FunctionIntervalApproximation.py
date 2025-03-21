@@ -12,7 +12,7 @@ import matplotlib.colors as mcolors
 threshold = 0.5
 
 # Scale factor between x and y-axis
-scale_factor = 0.03
+scale_factor = 0.7
 
 # x value for approximation
 x_value = 4
@@ -24,7 +24,9 @@ num_iterations = 30
 x = sp.symbols('x', real=True)
 #f = sp.exp(x)
 f = sp.sin(x) * sp.log(1/x) + sp.cos(x)  * 30
-
+##f = 0.01*x
+#f = sp.cos(x)
+#f = sp.exp(2*x-1)
 
 P = 0  # P = polynomial
 
@@ -42,7 +44,7 @@ for i in range(num_iterations):
     P += term
     polynomials.append(P)
 
-print(polynomials)
+print(f'Polynomials: {polynomials}')
 
 final_poly = polynomials[-1]
 
@@ -119,23 +121,24 @@ if scale_factor > 0:
     y_min_desired = y_center - desired_y_range / 2
     y_max_desired = y_center + desired_y_range / 2
 
-    # Replace your plt.axis('equal') with:
+    # to replace plt.axis('equal') # equal square; scaled
     plt.xlim(x_min, x_max)
     plt.ylim(y_min_desired, y_max_desired)
 
-    # Optional: Add these lines before plt.show() to add vertical and horizontal lines at the approximation point
+    """# vertical and horizontal lines at the approximation point; duplicate of further down
     plt.axvline(x=x_value, color='gray', linestyle='--', alpha=0.5)
-    plt.axhline(y=y_at_x_value, color='gray', linestyle='--', alpha=0.5)
+    plt.axhline(y=y_at_x_value, color='gray', linestyle='--', alpha=0.5)"""
+
 else:
     print("\tScale factor is negative, skip adjusting y-axis limits")
 
 
-plt.plot(x_vals, f_vals, label='Original function $e^x$', color='black')
+plt.plot(x_vals, f_vals, label=sp.latex(f), color='black')
 
 # create a color spectrum
 cmap = plt.cm.rainbow
 colors = [cmap(i / (num_iterations - 1)) for i in range(num_iterations)]
-
+"""
 for i, poly in enumerate(polynomials):
     poly_vals = [sp.N(poly.subs(x, val)) for val in x_vals]
     if i == num_iterations - 1:
@@ -143,6 +146,17 @@ for i, poly in enumerate(polynomials):
     else:
         # not the final approximation -> make plot line opaque
         plt.plot(x_vals, poly_vals, label=f'Approximation {i + 1}', color=colors[i], alpha=0.4)
+"""
+
+for i, poly in enumerate(polynomials):
+    poly_vals = [sp.N(poly.subs(x, val)) for val in x_vals]
+    if i == 0 or i == num_iterations - 1:
+        plt.plot(x_vals, poly_vals, label=f'Approximation {i + 1}', color=colors[i])
+    elif i % (num_iterations // 6) == 0:
+        plt.plot(x_vals, poly_vals, label=f'Approximation {i + 1}', color=colors[i], alpha=0.4)
+    else:
+        plt.plot(x_vals, poly_vals, color=colors[i], alpha=0.4)
+
 #plt.axis('equal') # equal square; scaled
 plt.xlabel('x')
 plt.ylabel('y')
