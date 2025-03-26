@@ -2,6 +2,9 @@ import sympy as sp
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.colors as mcolors
+#noticed this is inefficient as fuck, started a rework in the currently gitignored `FunctionIntervalApproximation_rework.py`
+
+
 
 # First time working with sympy, i need all the comments to memorize
 # what my pastes from the docs actually do
@@ -11,14 +14,14 @@ import matplotlib.colors as mcolors
 # Threshold for determining viewport (difference between original function and approximation)
 threshold = 0.5
 
-# Scale factor between x and y-axis
-scale_factor = 0.7
+# Scale factor between x and y-axis; negative value to ignore the scale and show the whole y range in the x-viewport
+scale_factor = -0.7
 
 # x value for approximation
 x_value = 4
 
 # Number of approximation iterations/degree of polynomial
-num_iterations = 30
+num_iterations = 19
 
 # define symbol and original function
 x = sp.symbols('x', real=True)
@@ -132,6 +135,8 @@ if scale_factor > 0:
 else:
     print("\tScale factor is negative, skip adjusting y-axis limits")
 
+plt.margins(x=0)
+#plt.tight_layout(pad=0)
 
 plt.plot(x_vals, f_vals, label=sp.latex(f), color='black')
 
@@ -150,7 +155,7 @@ for i, poly in enumerate(polynomials):
 
 for i, poly in enumerate(polynomials):
     poly_vals = [sp.N(poly.subs(x, val)) for val in x_vals]
-    if i == 0 or i == num_iterations - 1:
+    if i == 0 or i == num_iterations - 1 or len(polynomials) <=6:
         plt.plot(x_vals, poly_vals, label=f'Approximation {i + 1}', color=colors[i])
     elif i % (num_iterations // 6) == 0:
         plt.plot(x_vals, poly_vals, label=f'Approximation {i + 1}', color=colors[i], alpha=0.4)
