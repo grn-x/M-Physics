@@ -2,6 +2,8 @@ import sympy as sp
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.colors as mcolors
+from sympy.physics.optics import deviation
+
 #noticed this is inefficient as fuck, started a rework in the currently gitignored `FunctionIntervalApproximation_rework.py`
 
 
@@ -21,15 +23,26 @@ scale_factor = -0.7
 x_value = 4
 
 # Number of approximation iterations/degree of polynomial
-num_iterations = 19
+num_iterations = 10
 
 # define symbol and original function
 x = sp.symbols('x', real=True)
 #f = sp.exp(x)
-f = sp.sin(x) * sp.log(1/x) + sp.cos(x)  * 30
+#f = sp.sin(x) * sp.log(1/x) + sp.cos(x)  * 30
 ##f = 0.01*x
 #f = sp.cos(x)
 #f = sp.exp(2*x-1)
+f = x*sp.exp(x)
+
+
+#optional calculate the deviation for a given x value with the closest approximation, and a specified value
+custom_degree = 3
+deviation_at_x = 0.8
+#deviation_custom_degree = 0
+#deviation_clostest_approx = 0
+
+
+
 
 P = 0  # P = polynomial
 
@@ -61,6 +74,15 @@ def eval_at(x_val):
     orig = float(sp.re(f.subs(x, x_val).evalf(chop=True)))
     approx = float(sp.re(final_poly.subs(x, x_val).evalf(chop=True)))
     return orig, approx, abs(orig - approx)
+
+
+def eval_at_degree(degree, x_val):
+    """orig = float(sp.N(f.subs(x, x_val)))
+    approx = float(sp.N(final_poly.subs(x, x_val)))
+    return orig, approx, abs(orig - approx)"""
+    original = float(sp.re(f.subs(x, x_val).evalf(chop=True)))
+    degree = float(sp.re(polynomials[degree-1].subs(x, x_val).evalf(chop=True)))
+    return original, degree, abs(orig - degree)
 
 
 # find viewport boundaries by tracing left and right from original x_value until difference threshold in y value between
@@ -183,3 +205,21 @@ print(f"in LaTeX: {sp.latex(polynomials[-1])}")
 print(f"\tViewport range: [{x_min:.4f}, {x_max:.4f}]")
 print(f"\tDivergence point (left): {x_value - left_bound:.4f}")
 print(f"\tDivergence point (right): {x_value + right_bound:.4f}")
+
+print("\n\n")
+
+
+# calculate the deviation for a given x value with the closest approximation
+orig, approx, diff = eval_at(deviation_at_x)
+print(f"Original value at x = {deviation_at_x}: \t{orig:.10f}")
+print(f"Approximation of max degree {len(polynomials)} at x = {deviation_at_x}: \t{approx:.10f}")
+print(f"Deviation at x = {deviation_at_x}: \t{diff:.10f}")
+print(f"Difference Percentage: \t{diff / orig * 100:.10f}%")
+
+print("\n\n")
+# calculate the deviation for a given x value with the specified approximation degree
+orig, degree, diff_degree = eval_at_degree(custom_degree, deviation_at_x)
+print(f"Original value at x = {deviation_at_x}: \t{orig:.10f}")
+print(f"Degree {custom_degree} approximation at x = {deviation_at_x}: \t{degree:.10f}")
+print(f"Deviation at x = {deviation_at_x}: \t{diff_degree:.10f}")
+print(f"Difference Percentage: \t{diff_degree / orig * 100:.10f}%")
