@@ -1,2 +1,6 @@
 /FunctionIntervalApproximationTest.py
 /FunctionIntervalApproximation_rework.py
+.env
+.env/*
+.copilot-ignore
+.copilot-ignore/*
